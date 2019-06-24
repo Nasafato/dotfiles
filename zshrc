@@ -100,7 +100,7 @@ source ~/.bashrc
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 export EDITOR="vim"
-bindkey -v
+# bindkey -v
 
 # vi style incremental search
 bindkey '^R' history-incremental-search-backward
