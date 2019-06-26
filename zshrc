@@ -104,3 +104,5 @@ export EDITOR="vim"
 
 # vi style incremental search
 bindkey '^R' history-incremental-search-backward
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
