@@ -104,5 +104,10 @@ export EDITOR="vim"
 
 # vi style incremental search
 bindkey '^R' history-incremental-search-backward
+bindkey -r '^P'
+
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_DEFAULT_COMMAND="rg --files --hidden -g '!{.git,node_modules}/'"
+export FZF_DEFAULT_OPTS='--height 20% --layout=reverse --border'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
