@@ -35,10 +35,10 @@ filetype indent on
 let mapleader = ','
 let maplocalleader = '-'
 
-
+map Y y$
 " noremap <leader>P :set paste<CR>:put *<CR>:set nopaste<CR>
 inoremap jk <esc>
-
+nnoremap <silent> <c-l> :<c-u>nohlsearch<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Operator-pending mappings
@@ -53,7 +53,6 @@ nnoremap <silent> <c-p> :Files<cr>
 nnoremap <silent> <leader>b :Buffers<cr>
 nnoremap <c-f> :Rg<cr>
 nnoremap <leader>o :Explore<cr>
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Capitalizing words
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -129,6 +128,8 @@ endif
 autocmd BufNewFile,BufRead *.jsx set filetype=javascript.jsx
 autocmd BufNewFile,BufRead *.js set filetype=javascript.jsx
 
+nnoremap <leader>rt viwf.cvar<space><esc>
+
 augroup filetypes
     autocmd!
     autocmd FileType javascript.jsx setlocal tabstop=2 softtabstop=2 shiftwidth=2
@@ -175,6 +176,8 @@ Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'tpope/vim-commentary'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'rakr/vim-one'
+Plug 'joshdick/onedark.vim'
 
 call plug#end()
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -193,6 +196,7 @@ set background=dark
 " colorscheme solarized8
 " colorscheme desert
 colorscheme dracula
+" colorscheme onedark
 " togglebg#map("<F5>")
 highlight ColorColumn guibg=#23282C
 
@@ -206,10 +210,11 @@ endif
 " AIRLINE
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:airline_section_y=''
+" let g:airline_theme='onedark'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " COC INTELLISENSE
-" Remap keys for gotos
+" remap keys for gotos
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Coc.nvim settings ---------------------- {{{
 " nnoremap <silent> gd <Plug>(coc-definition)
@@ -225,7 +230,7 @@ set cmdheight=2
 set updatetime=300
 set signcolumn=yes
 
-nnoremap <silent> <space>f :<c-u>CocAction('format')<cr>
+nnoremap <silent> <space>f :<c-u>call CocAction('format')<cr>
 nnoremap <silent> <space>d :<c-u>CocList diagnostics<cr>
 " }}}
 

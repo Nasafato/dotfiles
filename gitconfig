@@ -1,0 +1,26 @@
+[user]
+	name = nasafato
+	email = alanjgou@gmail.com
+	signingkey = 2E2B59767791C0A5
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[color]
+	ui = true
+[alias]
+    rbi = rebase -i
+    cia = commit --amend --no-edit
+	dis = checkout -- 
+	co = checkout
+	ci = commit
+	s = status
+	br = branch
+	rb = rebase
+	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+    pop = stash pop
+[core]
+	excludesfile = /Users/alangou/.gitignore
+[pager]
+	branch = false
