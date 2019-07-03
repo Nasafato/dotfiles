@@ -93,3 +93,10 @@ bindkey -r '^P'
 export FZF_DEFAULT_COMMAND="rg --files --hidden -g '!{.git,node_modules}/'"
 export FZF_DEFAULT_OPTS='--height 20% --layout=reverse --border'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+
+# Load Git completion
+zstyle ':completion:*:*:git:*' script $HOME/.zsh/git-completion.bash
+fpath=($HOME/.zsh $fpath)
+
+autoload -Uz compinit && compinit
