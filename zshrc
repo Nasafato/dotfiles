@@ -83,6 +83,7 @@ source ~/.bashrc
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 export EDITOR="vim"
+set -o emacs
 # bindkey -v
 
 # vi style incremental search
