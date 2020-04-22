@@ -82,7 +82,8 @@ source ~/.bashrc
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-export EDITOR="vim"
+export VISUAL="nvim"
+export EDITOR="nvim"
 set -o emacs
 # bindkey -v
 
@@ -91,13 +92,24 @@ bindkey '^R' history-incremental-search-backward
 bindkey -r '^P'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export FZF_DEFAULT_COMMAND="rg --files --hidden -g '!{.git,node_modules}/'"
+export FZF_DEFAULT_COMMAND="rg --smart-case --files --hidden -g '!{.git,node_modules}/'"
 export FZF_DEFAULT_OPTS='--height 20% --layout=reverse --border'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-
 
 # Load Git completion
 zstyle ':completion:*:*:git:*' script $HOME/.zsh/git-completion.bash
 fpath=($HOME/.zsh $fpath)
 
 autoload -Uz compinit && compinit
+alias vim=nvim
+
+# FZF 
+# Preview https://github.com/junegunn/fzf/wiki/Configuring-shell-key-bindings#ctrl-t
+export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
+
+bindkey "^P" up-line-or-search
+bindkey "^N" down-line-or-search
+
+alias gs="git status"
+
+source ~/.zshrc.front

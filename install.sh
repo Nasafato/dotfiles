@@ -1,4 +1,4 @@
-#!/bin/bash
+#/bin/bash
 
 current_dir=$(pwd)
 files="vimrc zshrc tmux.conf gitconfig"
@@ -54,4 +54,25 @@ for file in $files; do
 done
 
 
+if hash tmux 2>/dev/null; then
+    echo "tmux already installed; skipping"
+else
+    echo "Installing tmux"
+    brew install tmux
+fi
+
+if hash nvim 2>/dev/null; then
+    echo "nvim already installed; skipping"
+else
+    echo "Installing nvim"
+    brew install nvim
+    echo "alias vim = nvim" >> ~/.zshrc
+fi
+
+if hash rg 2>/dev/null; then
+    echo "ripgrep already installed; skipping"
+else
+    echo "Installing ripgrep"
+    brew install ripgrep
+fi
 

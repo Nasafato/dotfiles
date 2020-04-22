@@ -1,8 +1,3 @@
-" Adding fzf to your runtime path
-" :echom '>^.^<'
-":messages
-"learning:begin
-"learning:end
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " BASIC EDITOR CONFIGURATION
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -16,15 +11,18 @@ set listchars=tab:•\ ,trail:•,extends:»,precedes:« " Unprintable chars map
 " set cursorline
 set scroll=20
 set scrolloff=3
-set colorcolumn=60,80,100
+set colorcolumn=80
 set showmatch " shows matches when searching
 set showcmd "show last command
 set number " line numbers
 set incsearch " incremental search as you type
+set ignorecase
+set smartcase
 set hlsearch " highlight matches when you search
 " Lets you use yy to copy text to clipboard on MacOS
 " https://vim.fandom.com/wiki/Mac_OS_X_clipboard_sharing
 set clipboard=unnamed
+set nowrap
 
 filetype indent on
 
@@ -35,46 +33,20 @@ filetype indent on
 let mapleader = ','
 let maplocalleader = '-'
 
+nnoremap g] :tjump<cr>
+
 map Y y$
 " noremap <leader>P :set paste<CR>:put *<CR>:set nopaste<CR>
 inoremap jk <esc>
+" inoremap kj <esc>
 nnoremap <silent> <c-l> :<c-u>nohlsearch<cr>
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Operator-pending mappings
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-onoremap p i(
-onoremap in( :<c-u>normal! f(vi(<cr>
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" File navigation and text search
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <silent> <c-p> :Files<cr>
-nnoremap <silent> <leader>b :Buffers<cr>
-nnoremap <c-f> :Rg<cr>
-nnoremap <leader>o :Explore<cr>
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Capitalizing words
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" In insert mode, capitalize the word you just typed out
-inoremap <c-u> <esc>vbUea
-" In normal mode, capitalize the current inner word
-nnoremap <leader><c-u> viwU
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Editing and refreshing vimrc
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <leader>ev :split  ~/.vimrc<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Quoting shit
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <leader>" viw<esc>a"<esc>bi"<esc>lel
-nnoremap <leader>' viw<esc>a'<esc>bi'<esc>lel
-" surrounds visually selected text with quotes
-" `< and `> let you select the start/end of the last visual selection
-vnoremap <leader>" A"<esc>bi"<esc>`<lv`>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Disabling the end and beginning of line movement keys
@@ -93,12 +65,6 @@ onoremap H ^
 nnoremap L $
 vnoremap L $
 onoremap L $
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Remapping up/down paging keys
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-iabbrev @@ alanjgou@gmail.com
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " CURSOR
@@ -127,11 +93,16 @@ endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 autocmd BufNewFile,BufRead *.jsx set filetype=javascript.jsx
 autocmd BufNewFile,BufRead *.js set filetype=javascript.jsx
-
-nnoremap <leader>rt viwf.cvar<space><esc>
+autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
+autocmd BufNewFile,BufRead *.ts set filetype=typescript.tsx
+autocmd BufNewFile,BufRead *.styl  set filetype=stylus
 
 augroup filetypes
     autocmd!
+    autocmd FileType stylus setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd FileType json setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd FileType html setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd FileType typescript.tsx setlocal tabstop=2 softtabstop=2 shiftwidth=2
     autocmd FileType javascript.jsx setlocal tabstop=2 softtabstop=2 shiftwidth=2
     autocmd FileType css set tabstop=2 softtabstop=2 shiftwidth=2
     autocmd FileType javascript.jsx nnoremap <buffer> <localleader>c I//<esc>
@@ -143,6 +114,12 @@ augroup END
 augroup markdown
     autocmd!
     onoremap ih :<c-u>execute "normal! ?^==\\+$:nohlsearch\rkvg_"<cr>
+augroup END
+
+augroup javascript
+    autocmd!
+    autocmd FileType javascript.jsx noremap <leader>so f<space>xi<cr><esc>>>
+    autocmd FileType typescript.tsx noremap <leader>so f<space>xi<cr><esc>>>
 augroup END
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -158,32 +135,53 @@ endif
 
 call plug#begin()
 
+" FZF baby
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+
+" Best theme
+Plug 'dracula/vim', { 'as': 'dracula' }
+
+" Status line
+Plug 'vim-airline/vim-airline' 
+
+" VSCode extensions for Vim
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" Indent guides https://github.com/nathanaelkane/vim-indent-guides
+" <leader>ig to toggle
+Plug 'nathanaelkane/vim-indent-guides'
+
+" Languages
+Plug 'plasticboy/vim-markdown'
+Plug 'pangloss/vim-javascript'
+Plug 'leafgarland/typescript-vim'
+Plug 'maxmellon/vim-jsx-pretty'
+Plug 'iloginow/vim-stylus'
 Plug 'prettier/vim-prettier', {
     \ 'do': 'yarn install',
     \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
-Plug 'altercation/vim-colors-solarized'
-Plug 'dracula/vim', { 'as': 'dracula' }
-Plug 'lifepillar/vim-solarized8'
-" Plug 'chriskempson/base18-vim'
-" Plug 'w0rp/ale'
-Plug 'tpope/vim-vinegar'
-Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
-Plug 'vim-airline/vim-airline' 
-Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
+
+" For vim stuff
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
+
+Plug 'christoomey/vim-tmux-navigator'
+
+
+" For stuff like snake_case to CamelCase
+Plug 'tpope/vim-abolish'
+
+" Commenting
 Plug 'tpope/vim-commentary'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'rakr/vim-one'
-Plug 'joshdick/onedark.vim'
+
+" Improving netrw
+Plug 'tpope/vim-vinegar'
+
+" For communicating with Tmux
+Plug 'benmills/vimux'
 
 call plug#end()
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" LINTING
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" let g:ale_linters = {'javascript': ['eslint']}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " THEMING
@@ -192,12 +190,6 @@ syntax enable
 set termguicolors
 let g:solarized_termcolors=256
 let g:solarized_termtrans=1
-set background=dark
-" colorscheme solarized8
-" colorscheme desert
-colorscheme dracula
-" colorscheme onedark
-" togglebg#map("<F5>")
 highlight ColorColumn guibg=#23282C
 
 if &term =~# '^screen'
@@ -205,38 +197,17 @@ if &term =~# '^screen'
     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
 
+colorscheme dracula
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " AIRLINE
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:airline_section_y=''
-" let g:airline_theme='onedark'
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" COC INTELLISENSE
-" remap keys for gotos
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Coc.nvim settings ---------------------- {{{
-" nnoremap <silent> gd <Plug>(coc-definition)
-" nnoremap <silent> gy <Plug>(coc-type-definition)
-" nnoremap <silent> gi <Plug>(coc-implementation)
-" nnoremap <silent> gr <Plug>(coc-references)
-" " === coc.nvim === "
-nmap <silent> <leader>dd <Plug>(coc-definition)
-nmap <silent> <leader>dr <Plug>(coc-references)
-nmap <silent> <leader>dj <Plug>(coc-implementation)
-
-set cmdheight=2
-set updatetime=300
-set signcolumn=yes
-
-nnoremap <silent> <space>f :<c-u>call CocAction('format')<cr>
-nnoremap <silent> <space>d :<c-u>CocList diagnostics<cr>
-" }}}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " FOLDING
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" `zo` to open fold
 " Vimscript file settings ---------------------- {{{
 augroup filetype_vim
     autocmd!
@@ -244,4 +215,69 @@ augroup filetype_vim
 
 augroup end
 " }}}
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Development
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" https://stackoverflow.com/questions/33351179/how-to-rewrite-existing-vim-key-bindings
+nmap <unique> <leader>_as <Plug>NetrwRefresh
+
+" Fuzzy-finder commands.
+" Searches through files in the workspace.
+nnoremap <silent> <c-p> :Files<cr>
+" Show the buffers and fuzzy-search through them.
+nnoremap <silent> <leader>b :Buffers<cr>
+" Searches through lines in the current buffer.
+nnoremap <silent> <leader>/ :BLines<cr>
+" Searches through vim commands.
+nnoremap <silent> <leader>c :Commands<cr>
+" ctrl-p && ctrl-n in fzf for prev and next search term
+let g:fzf_history_dir = '~/.local/share/fzf-history'
+let g:fzf_layout = { 'window': '30new' }
+" Trying to emulate workspace search, but doesn't work all that well.
+nnoremap <silent> <c-f> :Rg<cr>
+command! -bang -nargs=* Rg
+            \ call fzf#vim#grep(
+            \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+            \ <bang>0 ? fzf#vim#with_preview('up:60%')
+            \         : fzf#vim#with_preview('right:50%:hidden', '?'),
+            \ <bang>0)
+
+
+" Coc-nvim configuration.
+source ~/.vim/coc-nvim.vimrc
+
+function! RunMochaSingle(shouldInspect)
+    call VimuxRunCommand("C-c")
+    let testCmd = "clear; npm run mocha:single " . expand("%:p")
+    if (a:shouldInspect)
+        call VimuxRunCommand(testCmd . " -- --inspect-brk")
+    else
+        call VimuxRunCommand(testCmd)
+    endif
+endfunction
+
+map <leader>tf :call RunMochaSingle(0)<cr>
+map <leader>tfi :call RunMochaSingle(1)<cr>
+
+function! RunLastCommand()
+    call VimuxRunCommand("C-c")
+    call VimuxRunCommand("!!")
+    call VimuxSendKeys("Enter")
+endfunction
+
+map <leader>lc :call RunLastCommand()<cr>
+
+
+" copy current filepath into clipboard
+noremap <silent> <leader>yf :let @+ = expand("%")<cr>
+
+noremap <silent> <leader>lf :!npm run lint:fix -- expand("%")<cr>
+
+"""""""
+" Git "
+"""""""
+noremap <silent> <leader>gb :Gblame<cr>
+
+" Puts a Github link to the current line into your clipboard
+nnoremap <leader>gl :.Gbrowse!<cr>
