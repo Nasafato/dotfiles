@@ -1,6 +1,7 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " BASIC EDITOR CONFIGURATION
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set hidden
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
@@ -33,7 +34,7 @@ filetype indent on
 let mapleader = ','
 let maplocalleader = '-'
 
-nnoremap g] :tjump<cr>
+" nnoremap g] :tjump<cr>
 
 map Y y$
 " noremap <leader>P :set paste<CR>:put *<CR>:set nopaste<CR>
@@ -111,10 +112,10 @@ augroup filetypes
     autocmd FileType python iabbrev <buffer> iff if:<left>
 augroup END
 
-augroup markdown
-    autocmd!
-    onoremap ih :<c-u>execute "normal! ?^==\\+$:nohlsearch\rkvg_"<cr>
-augroup END
+" augroup markdown
+"     autocmd!
+"     onoremap ih :<c-u>execute "normal! ?^==\\+$:nohlsearch\rkvg_"<cr>
+" augroup END
 
 augroup javascript
     autocmd!
@@ -127,13 +128,17 @@ augroup END
 " Vim-plug https://github.com/junegunn/vim-plug
 " By the creator of fzf
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-if empty(glob('~/.vim/autoload/plug.vim'))
-    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-      \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+let should_install_vim_plug = 0
+let autoload_plug_path = stdpath('config') . '/autoload/plug.vim'
+if !filereadable(autoload_plug_path)
+    silent execute '!curl -fL --create-dirs -o ' . autoload_plug_path .
+      \ ' https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+    execute 'source ' . fnameescape(autoload_plug_path)
+    let should_install_vim_plug = 1
 endif
+unlet autoload_plug_path
 
-call plug#begin()
+call plug#begin(stdpath('config') . '/plugins')
 
 " FZF baby
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -181,7 +186,15 @@ Plug 'tpope/vim-vinegar'
 " For communicating with Tmux
 Plug 'benmills/vimux'
 
+Plug 'honza/vim-snippets'
+
+
 call plug#end()
+
+if should_install_vim_plug
+    PlugInstall --sync
+endif
+unlet should_install_vim_plug
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " THEMING
@@ -220,7 +233,7 @@ augroup end
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " https://stackoverflow.com/questions/33351179/how-to-rewrite-existing-vim-key-bindings
-nmap <unique> <leader>_as <Plug>NetrwRefresh
+" nmap <unique> <leader>_as <Plug>NetrwRefresh
 
 " Fuzzy-finder commands.
 " Searches through files in the workspace.
@@ -244,21 +257,32 @@ command! -bang -nargs=* Rg
             \ <bang>0)
 
 
-" Coc-nvim configuration.
-source ~/.vim/coc-nvim.vimrc
+ " nmap <unique> <c-r> <Plug>NetrwRefresh
+" Quick fix list
+" nnoremap <silent><:cnext<cr>
+" augroup quickfix_list_cmds
+"     autocmd!
+"     autcmd Bufk
+" augroup END
 
-function! RunMochaSingle(shouldInspect)
+
+" Coc-nvim configuration.
+"source ~/.vim/coc-nvim.vimrc
+
+function! RunMochaSingle(extraArgs)
     call VimuxRunCommand("C-c")
     let testCmd = "clear; npm run mocha:single " . expand("%:p")
-    if (a:shouldInspect)
-        call VimuxRunCommand(testCmd . " -- --inspect-brk")
+    echom a:extraArgs 
+    if strlen("a:extraArgs") > 0
+        call VimuxRunCommand(testCmd . " -- " . a:extraArgs)
     else
         call VimuxRunCommand(testCmd)
     endif
 endfunction
 
-map <leader>tf :call RunMochaSingle(0)<cr>
-map <leader>tfi :call RunMochaSingle(1)<cr>
+map <leader>tf :call RunMochaSingle("")<cr>
+map <leader>tfi :call RunMochaSingle("--inspect")<cr>
+map <leader>tfb :call RunMochaSingle("--inspect-brk")<cr>
 
 function! RunLastCommand()
     call VimuxRunCommand("C-c")
@@ -281,3 +305,61 @@ noremap <silent> <leader>gb :Gblame<cr>
 
 " Puts a Github link to the current line into your clipboard
 nnoremap <leader>gl :.Gbrowse!<cr>
+
+
+""""""""""""
+" coc.nvim "
+""""""""""""
+let g:coc_global_extensions = ['coc-eslint', 'coc-prettier', 'coc-tsserver', 'coc-json', 'coc-snippets']
+
+set nobackup
+set nowritebackup
+set cmdheight=2
+set updatetime=300
+set shortmess+=c
+set signcolumn=yes
+inoremap <expr><s-tab> pumvisible() ? "\<c-p>" : "\<c-h>"
+
+function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1] =~# '\s'
+endfunction
+
+inoremap <silent><expr> <c-space> coc#refresh()
+
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gy <Plug>(coc-type-definition)
+
+nnoremap <silent> K :call <sid>show_documentation()<cr>
+
+function! s:show_documentation()
+    if (index(['vim','help'], &filetype) >= 0)
+        execute 'h '.expand('<cword')
+    else
+        call CocAction('doHover')
+    endif
+endfunction
+
+xmap <leader>f <Plug>(coc-format-selected)
+nmap <leader>f <Plug>(coc-format-selected)
+
+" coc.nvim snippets
+nmap <leader>ff <Plug>(coc-format)
+" imap <C-l> <Plug>(coc-snippets-expand)
+inoremap <silent><expr> <tab>
+    \ pumvisible() ? coc#_select_confirm() :
+    \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+    \ <sid>check_back_space() ? "\<tab>" :
+    \ coc#refresh()
+
+let g:coc_snippet_next = '<tab>'
+
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+nmap <silent> [g <Plug>(coc-diagnostic-next)
+    nmap <leader>rn <Plug>(coc-rename)
+
+" https://github.com/neoclide/coc.nvim/wiki/Using-the-configuration-file
+" For projects with prettier-eslint, start setting prettier.eslintIntegration
+" to true in the project config.
+command! -nargs=0 Prettier :CocCommand prettier.formatFile

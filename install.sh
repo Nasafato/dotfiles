@@ -3,6 +3,13 @@
 current_dir=$(pwd)
 files="vimrc zshrc tmux.conf gitconfig"
 
+if which -s brew; then
+    echo "brew already installed; skipping"
+else
+    echo "installing brew"
+    curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh
+fi
+
 if which -s zsh; then
     echo "zsh is already installed; skipping"
 else
@@ -67,6 +74,8 @@ else
     echo "Installing nvim"
     brew install nvim
     echo "alias vim = nvim" >> ~/.zshrc
+    mkdir -p ~/.config/nvim
+    ln -s $current_dir/vimrc ~/.config/nvim/init.vim
 fi
 
 if hash rg 2>/dev/null; then
@@ -76,3 +85,16 @@ else
     brew install ripgrep
 fi
 
+
+if test -f ~/.nvm; then
+    echo "nvm installed,; skipping"
+else
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+fi
+
+
+if [[ $(python -m pip show pynvim) ]]; then
+    echo "pynvim already installed; skipping"
+else
+    python -m pip install --user --upgrade pynvim
+fi

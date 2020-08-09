@@ -61,8 +61,6 @@ source $ZSH/oh-my-zsh.sh
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
-source ~/.bashrc
-
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
 #   export EDITOR='vim'
@@ -92,7 +90,8 @@ bindkey '^R' history-incremental-search-backward
 bindkey -r '^P'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export FZF_DEFAULT_COMMAND="rg --smart-case --files --hidden -g '!{.git,node_modules}/'"
+# export FZF_DEFAULT_COMMAND="rg --smart-case --files --hidden -g '!{.git,node_modules}/'"
+export FZF_DEFAULT_COMMAND="fd --type file --hidden --exclude .git"
 export FZF_DEFAULT_OPTS='--height 20% --layout=reverse --border'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
@@ -111,5 +110,39 @@ bindkey "^P" up-line-or-search
 bindkey "^N" down-line-or-search
 
 alias gs="git status"
+alias gacp="git add ./src && git add ./public && git cia && git push -f origin"
 
-source ~/.zshrc.front
+is_in_git_repo() {
+    git rev-parse HEAD > /dev/null 2>&1
+}
+
+# source ~/.zshrc.front
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  --no-use # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" --no-use # This loads nvm bash_completion
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+# front-only
+# alias cdf="cd $HOME/dev/front/front"
+# alias cdfc="cd $HOME/dev/front/front-client"
+# alias cdfw="cd $HOME/dev/front/front-website"
+
+# alias cdbc="cd $HOME/dev/coursera/bitcoin-and-cryptocurrency"
+# agora only
+alias cda="cd $HOME/dev/agora/web"
+
+alias python="python3"
+export PATH="/Users/alangou/Library/Python/3.7/bin:$PATH"
+
+# alias aws='docker run --rm -it amazon/aws-cli'
+alias aws='docker run --rm -it -v ~/.aws:/root/.aws -v $(pwd):/aws amazon/aws-cli'
+
+export DENO_INSTALL="/Users/alangou/.deno"
+export PATH="$DENO_INSTALL/bin:$PATH"
+
+export PATH="$HOME/.cargo/bin:$PATH"
+
+export LDFLAGS="-L/usr/local/opt/zlib/lib"
+export CPPFLAGS="-I/usr/local/opt/zlib/include"
