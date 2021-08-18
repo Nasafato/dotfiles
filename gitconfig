@@ -21,3 +21,5 @@
   branch = false
 [url "https://github.com/"]
   insteadOf = gh:
+[init]
+	defaultBranch = master

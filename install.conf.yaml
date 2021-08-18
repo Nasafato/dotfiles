@@ -1,0 +1,18 @@
+# https://github.com/anishathalye/dotbot
+- defaults:
+    link:
+      relink: true
+- clean: ['~']
+
+- link:
+    ~/.zshrc: zshrc-new
+    ~/.tmux.conf: tmux.conf
+    ~/.config/nvim:
+      create: true
+      path: config/nvim
+
+- create:
+  - ~/.vim/undo-history
+
+- shell:
+  - [git submodule update --init --recursive, Install submodules]

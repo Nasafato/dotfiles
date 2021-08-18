@@ -77,16 +77,16 @@ noremap <silent> <leader>yf :let @+ = expand("%")<cr>
 nnoremap <leader>gl :.GBrowse!<cr>
 nnoremap <silent> <leader>gb :Git blame<cr>
 
-" lua require('config')
-" lua require('tmux')
+lua require('config')
+lua require('tmux')
 
-" lua << EOF
-" local map = vim.api.nvim_set_keymap
-" map('n', '<c-w>h', [[<cmd>lua require('tmux').move_left()<cr>]], {noremap=true}) 
-" map('n', '<c-w>j', [[<cmd>lua require('tmux').move_down()<cr>]], {noremap=true}) 
-" map('n', '<c-w>k', [[<cmd>lua require('tmux').move_up()<cr>]], {noremap=true}) 
-" map('n', '<c-w>l', [[<cmd>lua require('tmux').move_right()<cr>]], {noremap=true}) 
-" EOF
+lua << EOF
+local map = vim.api.nvim_set_keymap
+map('n', '<c-w>h', [[<cmd>lua require('tmux').move_left()<cr>]], {noremap=true}) 
+map('n', '<c-w>j', [[<cmd>lua require('tmux').move_down()<cr>]], {noremap=true}) 
+map('n', '<c-w>k', [[<cmd>lua require('tmux').move_up()<cr>]], {noremap=true}) 
+map('n', '<c-w>l', [[<cmd>lua require('tmux').move_right()<cr>]], {noremap=true}) 
+EOF
 
 nnoremap <silent> <leader>ff :Format<cr>
 
