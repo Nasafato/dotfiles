@@ -1,3 +1,9 @@
+set runtimepath^=~/.vim runtimepath+=~/.vim/after
+let &packpath = &runtimepath
+if filereadable("~/.vimrc")
+  source ~/.vimrc
+endif
+
 " Lucas's Vimrc
 set nocompatible
 set number rnu
@@ -13,9 +19,10 @@ set smartcase
 set hlsearch " highlight matches when you search
 set hidden
 set expandtab shiftwidth=2 smarttab
+set termguicolors
 syntax on
 
-call plug#begin('~/.vim/plugged')
+call plug#begin(stdpath('data') . '/plugged')
 Plug 'junegunn/vim-plug'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -31,12 +38,16 @@ Plug 'tpope/vim-commentary'
 Plug 'leafgarland/typescript-vim'
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'kevinoid/vim-jsonc'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/playground'
+Plug 'neovim/nvim-lspconfig'
+Plug 'hashivim/vim-terraform'
+Plug 'mhartington/formatter.nvim'
 call plug#end()
 
-let base_init_vim = $BASE_INIT_VIM
 let mapleader = ','
-nnoremap <silent> <leader>sv :silent let f = system("zsh ~/bin/refresh-vim.sh")<bar>:redraw!<bar>:source $MYVIMRC<bar>:e<bar>:echo "Refreshed vim config"<cr>
-nnoremap <leader>ev :execute "vsplit" base_init_vim<cr>
+nnoremap <leader>sv :source $MYVIMRC<cr>
+nnoremap <leader>ev :execute "vsplit" $MYVIMRC<cr>
 inoremap jk <esc>
 
 nnoremap H ^
@@ -71,3 +82,17 @@ nnoremap <silent> <c-f> :Rg<cr>
 noremap <silent> <leader>yf :let @+ = expand("%")<cr>
 nnoremap <leader>gl :.GBrowse!<cr>
 nnoremap <silent> <leader>gb :Git blame<cr>
+
+lua require('config')
+lua require('tmux')
+
+lua << EOF
+local map = vim.api.nvim_set_keymap
+map('n', '<c-w>h', [[<cmd>lua require('tmux').move_left()<cr>]], {noremap=true}) 
+map('n', '<c-w>j', [[<cmd>lua require('tmux').move_down()<cr>]], {noremap=true}) 
+map('n', '<c-w>k', [[<cmd>lua require('tmux').move_up()<cr>]], {noremap=true}) 
+map('n', '<c-w>l', [[<cmd>lua require('tmux').move_right()<cr>]], {noremap=true}) 
+EOF
+
+nnoremap <silent> <leader>ff :Format<cr>
+

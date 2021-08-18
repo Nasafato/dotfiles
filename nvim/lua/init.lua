@@ -1,0 +1,27 @@
+-- local opt = vim.opt
+-- opt.nocompatible = true
+-- opt.number = {'rnu'}
+-- opt.mouse = {'a'}
+-- opt.backspace = {'indent', 'eol', 'start' }
+-- opt.clipboard = { 'unnamed' }
+
+-- opt.colorcolumn = 80
+-- opt.incsearch = true
+-- opt.ignorecase = true
+-- opt.smartcase = true
+-- opt.hlsearch = true
+-- opt.hidden = true
+-- opt.expandtab = true
+-- opt.shiftwidth = 2
+-- opt.smarttab = true
+-- opt.termguicolors = true
+
+-- vim.api.nvim_exec([[
+-- 	autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) | execute 'cd '.argv()[0] | execute 'NvimTreeOpen' | wincmd l | endif
+-- ]], false)
+-- require('tmux')
+-- local map = vim.api.nvim_set_keymap
+-- map("n", "c-w h", [[<cmd>lua require('tmux').move_left()<cr>]], {})
+-- map("n", "c-w j", [[<cmd>lua require('tmux').move_down()<cr>]], {})
+-- map("n", "c-w k", [[<cmd>lua require('tmux').move_up()<cr>]], {})
+-- map("n", "c-w l", [[<cmd>lua require('tmux').move_right()<cr>]], {})
