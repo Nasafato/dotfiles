@@ -37,13 +37,14 @@ bins:
 	
 vim: 
 	mkdir -p ~/.config/nvim/lua
+	cp -a ./nvim/lua/. ~/.config/nvim/lua/
 	if [ -f ~/.config/nvim/init.vim ]; then \
 		rm ~/.config/nvim/init.vim ; \
 	fi	
 	if [ ! -d ~/.config/nvim ]; then mkdir ~/.config/nvim ; fi
 	ln -s "$(ROOT_DIR)/nvim/init.vim" ~/.config/nvim/init.vim
-	if [ ! -f ~/.local/share/nvim/autoload/plug.vim ]; then \
-		curl -fLo ~/.local/share/nvim/autoload/plug.vim --create-dirs \
+	if [ ! -f ~/.local/share/nvim/site/autoload/plug.vim ]; then \
+		curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
 		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim ; \
 	fi
 	nvim --headless +PlugInstall +UpdateRemotePlugins +qa
