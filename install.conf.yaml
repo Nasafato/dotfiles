@@ -5,8 +5,11 @@
 - clean: ['~']
 
 - link:
-    ~/.zshrc: zshrc-new
+    ~/.dotfiles: ""
+    ~/.zshrc:
+    ~/.zsh:
     ~/.tmux.conf: tmux.conf
+    ~/.gitconfig: gitconfig
     ~/.config/nvim:
       create: true
       path: config/nvim
@@ -16,3 +19,13 @@
 
 - shell:
   - [git submodule update --init --recursive, Install submodules]
+  -
+    command: make mac-clis
+    description: Installing Mac CLI tools
+    stdin: true
+    stdout: true
+  -
+    command: make vim
+    description: Installs vim-plug and installs plugins
+    stdin: true
+    stdout: true
