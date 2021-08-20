@@ -9,9 +9,15 @@ files: sh bins vim
 #######
 	
 mac-clis:
-	arch -arm64 brew install gh tmux neovim fd ripgrep jq fzf exa bat
-	arch -arm64 brew install reattach-to-user-namespace
-	arch -arm64 brew install volta
+	if [ `uname -m` == 'arm64' ]; then \
+		arch -arm64 brew install gh tmux neovim fd ripgrep jq fzf exa bat; \
+		arch -arm64 brew install reattach-to-user-namespace; \
+		arch -arm64 brew install volta; \
+	else \
+		brew install gh tmux neovim fd ripgrep jq fzf exa bat; \
+		brew install reattach-to-user-namespace; \
+		brew install volta; \
+	fi
 
 mac-alacritty:
 	brew cask install alacritty

@@ -10,9 +10,18 @@ export PATH="$VOLTA_HOME/bin:$PATH"
 export EDITOR="nvim"
 export VISUAL="nvim"
 alias vim="nvim"
+alias cat="bat"
+alias ls="exa"
 
-source ~/.git-completion.bash
+# I have no idea, to be honest, but look it up in zshmodules manual.
+zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.bash
 fpath=(~/.zsh $fpath);
+# Scans paths in fpath for files starting with _ and loads corresponding script
+# as a function file.
+# compinit initializes the shell's autocomplete functionality
+# The -U flag suppresses alias expansion when the function is loaded.
+# The -z flag marks the function to be autoloaded using zsh style.
+autoload -Uz compinit && compinit
 
 autoload -z edit-command-line
 zle -N edit-command-line
@@ -21,7 +30,7 @@ bindkey "^X^E" edit-command-line
 export DOTFILES="$HOME/dev/dotfiles"
 
 function edzsh {
-  vim "$DOTFILES/zsh"
+  vim "$DOTFILES/zshrc"
 }
 
 function edtmux {
@@ -39,23 +48,6 @@ function eddf() {
 alias cdw="cd $HOME/work/web"
 alias cdd="cd $HOME/dev/dotfiles"
 
-# Git aliases.
-alias g=git
-alias gs="git status"
-alias gco="git checkout"
-alias gcan="git commit --amend --no-edit"
-alias gcanf="git commit --amend --no-edit && git push -f origin"
-alias grb="git rebase"
-alias ga="git add"
-alias gl="git log --all --graph --date-order --pretty=format:'%C(yellow)%h%C(bold red)%d%Creset %s %Cgreen{%an} %Cblue%cr%Creset' --abbrev-commit"
-alias glob="git log               --date-order --pretty=format:'%C(yellow)%h%C(bold red)%d%Creset %s %Cgreen{%an} %Cblue%cr%Creset' --abbrev-commit"
-alias gpb="gitPushAndCreateBranch"
-alias gcob='git checkout $(git branch | fzf)'
-
-function gitPushAndCreateBranch() {
-  git push -u origin $(git rev-parse --abbrev-ref HEAD)
-}
-
 bindkey '^R' history-incremental-search-backward
 
 # Git
@@ -70,8 +62,6 @@ function sn {
   volta install npm@bundled
 }
 
-alias cat="bat"
-alias ls="exa"
 
 # Place this at the bottom so it changes history-incremental-search-backward.
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
