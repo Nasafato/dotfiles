@@ -4,6 +4,12 @@ export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude .git'
 # Volta is used to install Node toolchains. Much faster than nvm.
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
+export PATH="/opt/homebrew/bin:$PATH"
+export PATH="/Users/agou/Library/Application\ Support/fnm:$PATH"
+export PATH="$HOME/.scripts:$PATH"
+export FNM_COREPACK_ENABLED=true
+eval "$(fnm env --use-on-cd)"
+
 
 # https://unix.stackexchange.com/questions/4859/visual-vs-editor-what-s-the-difference
 # Basically, set them both to your preference.
@@ -11,7 +17,7 @@ export EDITOR="nvim"
 export VISUAL="nvim"
 alias vim="nvim"
 alias cat="bat"
-alias ls="exa"
+alias ls="eza"
 
 # I have no idea, to be honest, but look it up in zshmodules manual.
 zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.bash
@@ -67,3 +73,26 @@ function sn {
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 source ~/.zsh/git.zsh
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# fnm
+
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/agou/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/agou/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/agou/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/Users/agou/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+

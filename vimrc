@@ -10,7 +10,7 @@ set ruler
 set list          " Display unprintable characters f12 - switches
 set listchars=tab:•\ ,trail:•,extends:»,precedes:« " Unprintable chars mapping
 " set cursorline
-set scroll=20
+" set scroll=20
 set scrolloff=3
 set colorcolumn=80
 set showmatch " shows matches when searching

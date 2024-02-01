@@ -7,7 +7,7 @@ if which -s brew; then
     echo "brew already installed; skipping"
 else
     echo "installing brew"
-    curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
 if which -s zsh; then
@@ -23,6 +23,7 @@ if test "$current_shell" != "/bin/zsh"; then
     chsh -s /bin/zsh
 fi
 
+curl -fsSL https://fnm.vercel.app/install | bash
 
 # Install oh-my-zsh
 if test -d $HOME/.oh-my-zsh; then
