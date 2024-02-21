@@ -83,16 +83,19 @@ export NVM_DIR="$HOME/.nvm"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/agou/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('/Users/alangou/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/Users/agou/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/agou/miniconda3/etc/profile.d/conda.sh"
+    if [ -f "/Users/alangou/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/alangou/miniconda3/etc/profile.d/conda.sh"
     else
-        export PATH="/Users/agou/miniconda3/bin:$PATH"
+        export PATH="/Users/alangou/miniconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+# fnm
+export PATH="/Users/alangou/Library/Application Support/fnm:$PATH"
+eval "`fnm env`"

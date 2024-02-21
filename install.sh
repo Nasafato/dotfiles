@@ -61,6 +61,8 @@ for file in $files; do
     ln -s $current_dir/$file $HOME/.$file
 done
 
+ln -s $current_dir/zsh/git.zsh $HOME/.zsh/git.zsh
+
 
 if hash tmux 2>/dev/null; then
     echo "tmux already installed; skipping"
@@ -87,11 +89,11 @@ else
 fi
 
 
-if test -f ~/.nvm; then
-    echo "nvm installed,; skipping"
-else
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
-fi
+# if test -f ~/.nvm; then
+#     echo "nvm installed,; skipping"
+# else
+#     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+# fi
 
 
 if [[ $(python -m pip show pynvim) ]]; then
@@ -99,3 +101,10 @@ if [[ $(python -m pip show pynvim) ]]; then
 else
     python -m pip install --user --upgrade pynvim
 fi
+
+brew install --cask superhuman
+brew install --cask raycast
+brew install --cask rectangle
+brew install --cask cursor
+brew install --cask obsidian
+brew install --cask notion-calendar
